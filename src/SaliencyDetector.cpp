@@ -10,7 +10,6 @@
 #include <unistd.h>
 #include <iostream>
 #include <stdlib.h>
-#include <string>
 #include <getopt.h>
 #include <sys/time.h>
 #include <Magick++.h>
@@ -27,7 +26,7 @@ using namespace Magick;
 
 // Global stuff like command line options.
 //
-
+// TODO Fix typo
 #define VERSIO "0.2 alpha"
 
 typedef unsigned long long timestamp_t;

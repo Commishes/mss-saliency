@@ -12,9 +12,10 @@
 //===========================================================================
 
 #include <stdlib.h>
-#include <string.h>
+#include <assert.h>
+#include <sys/types.h>
+#include <vector>
 #include <math.h>
-#include "SaliencyDetector.h"
 #include "SymmetricSurroundSaliency.h"
 
 using namespace std;
@@ -183,6 +184,75 @@ void SymmetricSurroundSaliency::GaussianSmooth(const vector<double>& inputImg,
 		}
 	}
 }
+
+//===========================================================================
+///	CreateIntegralImage
+///
+///	Any type (int, float, double) version
+//===========================================================================
+template<class T> void SymmetricSurroundSaliency::CreateIntegralImage(const vector<T>& inputImg,
+		const int& width, const int& height, vector<vector<T> >& intImg)
+{
+	// Initialize
+	vector<T> initvec(width, 0);
+	intImg.resize(height, initvec);
+
+	int index(0);
+	for (int j = 0; j < height; j++)
+	{
+		T sumRow(0);
+		for (int k = 0; k < width; k++)
+		{
+			sumRow += inputImg[index];
+			index++;
+
+			if (0 == j)
+			{
+				intImg[j][k] = sumRow;
+			}
+			else
+			{
+				intImg[j][k] = intImg[j - 1][k] + sumRow;
+			}
+		}
+	}
+}
+
+
+//===========================================================================
+///	Normalize
+//===========================================================================
+void SymmetricSurroundSaliency::Normalize(vector<double>& salmap, const int& width, const int& height)
+	{
+		double maxval(0);
+		double minval(1 << 30);
+		int sz = width * height;
+		{
+			for (int i = 0; i < sz; i++)
+			{
+				if (maxval < salmap[i])
+					maxval = salmap[i];
+				if (minval > salmap[i])
+					minval = salmap[i];
+			}
+		}
+
+		int range = maxval - minval;
+		assert( range > 0 );
+
+		{
+			for (int i = 0; i < sz; i++)
+			{
+				salmap[i] = ((255.0 * (salmap[i] - minval)) / range);
+				//----------------------------------------------------------------
+				// More efficient way of multiplying by 255 is to multipy by
+				// (256-1) and use shifts instead of multiplication
+				//----------------------------------------------------------------
+				//int val = saliencyMap[y][x] - minval;
+				//saliencyMap[y][x] = ((val << 8) - val + 1)/range;
+			}
+		}
+	}
 
 //===========================================================================
 ///	ComputeMaximumSymmetricSurroundSaliency

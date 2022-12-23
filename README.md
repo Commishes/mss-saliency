@@ -24,15 +24,26 @@ Note: setting either of the above two implies --threshold
 
 ## Introduction
 
-Detection of visually salient image regions is useful for  applications like object segmentation, adaptive compression and  object recognition. Recently, full-resolution salient maps that  retain well-defined boundaries have attracted attention. In these  maps, boundaries are preserved by retaining substantially more frequency content from the original image than older techniques.  However, if the salient regions comprise more than half the pixels  of the image, or if the background is complex, the background gets  highlighted instead of the salient object.
+Detection of visually salient image regions is useful for applications like object segmentation, adaptive compression and object recognition. Recently, full-resolution salient maps that retain well-defined boundaries have attracted attention. In these maps, boundaries are preserved by retaining substantially morefrequency content from the original image than older techniques. However, if the salient regions comprise more than half the pixels of the image, or if the background is complex, the background gets highlighted instead of the salient object.
 
-Maximum Symmetric Surround Saliency is a method for salient region detection that retains the  advantages of full resolution saliency maps with well-defined  boundaries while overcoming their shortcomings. It exploits  features of color and luminance, is simple to implement and is  computationally efficient.
+Maximum Symmetric Surround Saliency is a method for salient region detection that retains the advantages of full resolution saliency maps with well-defined boundaries while overcoming their shortcomings. It exploits features of color and luminance, is simple to implement and is computationally efficient.
 
 ## Build Instructions
 
 Go to /Release (or /Debug if you want all debugging flags built in) and run "make all" to generate the "SaliencyDetector" binary which you can put in your local $PATH.
 
 We successfully ran builds on both OSX and Linux, provided that a current version of ImageMagick is installed on your system as we rely on ImageMagick for gobbling up the image binary data and outputting the resulting saliency-map image.
+
+Needs (Ubuntu / Debian):
+
+```
+sudo apt install libmagick++-dev
+```
+
+or (on RHEL):
+```
+sudo dnf install libmagick++-dev
+```
 
 There are up-to-date precompiled OSX binaries of SaliencyDetector available in the /Binary directory within this repository.
 
